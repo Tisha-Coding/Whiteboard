@@ -17,7 +17,7 @@ const CollabComp = () => {
       try {
         // First, check if the key already exists
         const { data: existing, error: checkError } = await supabase
-          .from("Whiteboarddb")
+          .from("whiteboardstable")
           .select("key")
           .eq("key", roomId);
 
@@ -32,7 +32,7 @@ const CollabComp = () => {
         if (existing && existing.length > 0) {
           // Key exists → update
           const { error: updateError } = await supabase
-            .from("Whiteboarddb")
+            .from("whiteboardstable")
             .update({ json: JSON.stringify(snapshot) })
             .eq("key", roomId);
 
@@ -46,7 +46,7 @@ const CollabComp = () => {
         } else {
           // Key doesn't exist → insert
           const { error: insertError } = await supabase
-            .from("Whiteboarddb")
+            .from("whiteboardstable")
             .insert([{ key: roomId, json: JSON.stringify(snapshot) }]);
 
           if (insertError) {
@@ -80,7 +80,7 @@ const CollabComp = () => {
   const loadData = async (editor) => {
     try {
       const { data, error } = await supabase
-        .from("Whiteboarddb")
+        .from("whiteboardstable")
         .select("*")
         .eq("key", roomId);
 
